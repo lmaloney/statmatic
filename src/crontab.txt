@@ -1,0 +1,2 @@
+# Add to crontab, runs newsyslog every 10 minutes
+*/10	*	*	*	*	root  /usr/sbin/newsyslog
