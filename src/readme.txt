@@ -19,15 +19,11 @@ Title: install.txt for statmatic.sh ONLY
 
 Description:
 
-This is a work in progress.  These set of programs will capture various FreeBSD system statistics (one sample every second) and log
-the results on a remote file system (Ideall an NFS mount or CIFS mount.)  You may store the data on a local file system, but if you want
-to safely store the data in case the system crashes,  you may want to do it remotely.
+This software will capture various FreeBSD system statistics (one sample every second) and log the results on a remote file system (Ideally an NFS mount or CIFS mount.)  You may store the data on a local file system, but if you want to safely store the data in case the system crashes,  you may want to do it remotely.
 
-The data is stored in a YAML format (list of associative arrys), and then transformed into a graph using R to inspect the data.  Future versions
-will store in rrdgraph, and other tools as well.  We chose R as a starter, because one can perform statistically analysis comparing results
-on expected performances VS observed performance.
+The data is stored in a YAML format (list of associative arrays), and then transformed into a graph using R to inspect the data.  Future versions will store in rrdgraph, and other tools as well.  We chose R as a starter, because one can perform statistical analysis comparing results on expected performances VS observed performance.
 
-Additionally, this package may  help diagnose systemic issues.
+Additionally, this package may help diagnose systemic issues.
 
 There are two parts to the software:     
 
@@ -35,15 +31,14 @@ There are two parts to the software:
    2.) Transform data: transform.py (Python program to transform data, and generate graphs)
 
 We take a "big net" perspective with this version, grabbing anything and everything, and enable the user to explicitly ignore undesirable data. 
-There is a simple heurstic in the transform.py script which will ignore vectors that are unchanging.  (This is useful to screen 
-out sysctls are are just knobs which are set.)  An included 'blacklist.txt' file has sysctls the user can ignore.  
+
+There is a simple heurstic in the transform.py script which will ignore vectors that are unchanging.  (This is useful to screen  out sysctls are are just knobs which are set.)  An included 'blacklist.txt' file has sysctls the user can ignore.  
 
 (A white list will be added shortly)
 
 Once data is capture, the user can run the transform.py program to generate the graphs:
 
-./transform.py sysctl??.txt --rgraph (to generate the graph)  This will also generate a set of CSV files which can be used in any other
-program for analysis purpose.
+./transform.py sysctl??.txt --rgraph (to generate the graph)  This will also generate a set of CSV files which can be used in any other program for analysis purpose.
 
 (more to come)
 
@@ -85,14 +80,13 @@ Manual Install:
 1.) copy capture_config.sh to Host/Target machine (truenas) where it will survive reboots (/data ideally)
 2.) edit capture_config.sh "logdir" variable to point to the directory where data will be logged (Ideally remote NFS mount)
 3.) Add the included newsyslog.conf to /etc/newsyslog.conf of the target  
-4.) Add contents from crontab.txt to crontab of root account on Target (copy line from crontab.txt and edit crontab with command
+4.) Add contents from crontab.txt to crontab of root account on Target (copy line from crontab.txt and edit crontab 
+    with command
     'crontab -e', insert line from crontab.txt, exit vi and save. 
 
 Get ready to rock:
 
-chmod +x on capture_config.sh and start.  Output will scroll on terminal, you can kill it with ctrl-c, or background it and kill
-off later.  Note: If you run it in foreground, it will die off if you lose your session, so use screens or tmux or background it to
-keep it running.
+chmod +x on capture_config.sh and start.  Output will scroll on terminal, you can kill it with ctrl-c, or background it and kill off later.  Note: If you run it in foreground, it will die off if you lose your session, so use screens or tmux or background it to keep it running.
 
 When capture is done, kill off capture_config.sh, and copy down all the log files for processing with transform_sysctl.py
 
